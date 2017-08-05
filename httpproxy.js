@@ -49,6 +49,7 @@ const path = require('path');
 const proxy = httpProxy.createProxyServer({});
 const server = http.createServer(function(req, res) {
 
+    // Check do we want to swap in a local file for the requested file.
     for (let i = 0; i < proxyToLocals.length; i++) {
         const proxyToLocal = proxyToLocals[i];
 
@@ -74,6 +75,7 @@ const server = http.createServer(function(req, res) {
         }
     }
 
+    // Not swapped for a local file (see above), so just proxy to the target server.
     proxy.web(req, res, { target: `${proxyToHost}:${proxyToPort}` });
 });
 
