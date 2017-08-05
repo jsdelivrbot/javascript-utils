@@ -16,9 +16,8 @@
  * Default is to proxy port 18080 -> 8080
  */
 
-const proxyFromPort = 18080;
-const proxyToHost = 'http://localhost';
-const proxyToPort = 8080;
+const proxyFromPort = 21080;
+const proxyTo = 'http://localhost:8080';
 
 //
 // MODIFY this array. Note you can add a 'headers' object too.
@@ -76,9 +75,9 @@ const server = http.createServer(function(req, res) {
     }
 
     // Not swapped for a local file (see above), so just proxy to the target server.
-    proxy.web(req, res, { target: `${proxyToHost}:${proxyToPort}` });
+    proxy.web(req, res, { target: proxyTo });
 });
 
 server.listen(proxyFromPort);
 
-console.log(`Proxying port ${proxyFromPort} to ${proxyToHost}:${proxyToPort}`);
+console.log(`Proxying port ${proxyFromPort} to ${proxyTo}`);
