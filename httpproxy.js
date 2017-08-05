@@ -8,8 +8,6 @@
  * Running:
  * Simply run "node httpproxy.js".
  *
- * Configuration is done in this file itself i.e. just change the script :)
- *
  * Acts as a regular proxy, but also lets you swap in local resources, which is very useful for
  * debugging JavaScript etc in a page in situations where you can't easily modify/rebuild the
  * source JavaScript i.e. similar to www.requestly.in, but with local filesystem support
@@ -18,18 +16,25 @@
  * Default is to proxy port 18080 -> 8080
  */
 
+const proxyFromPort = 18080;
+const proxyToHost = 'http://localhost';
+const proxyToPort = 8080;
+
 //
 // MODIFY this array. Note you can add a 'headers' object too.
 //
+// Configure this if you want to proxy a local file on the filesystem i.e. swap in
+// a local file for a file on the remote host. Useful for modifying/debugging a remote javascript.
+//
+// All requests that don't match anything in this array are just proxied to the target server.
+//
 const proxyToLocals = [
-    {
-        from: '/scripts/hudson-behavior.js',
-        to: '/Users/tfennelly/projects/jenkins/war/src/main/webapp/scripts/hudson-behavior.js'
-    }
+    // {
+    //     from: '/scripts/hudson-behavior.js',
+    //     to: '/Users/tfennelly/projects/jenkins/war/src/main/webapp/scripts/hudson-behavior.js',
+    //     headers: {}
+    // }
 ];
-
-const proxyFromPort = 18080;
-const proxyToPort = 8080;
 
 const mimetypes = {
     '.js': 'application/javascript',
@@ -69,9 +74,9 @@ const server = http.createServer(function(req, res) {
         }
     }
 
-    proxy.web(req, res, { target: `http://localhost:${proxyToPort}` });
+    proxy.web(req, res, { target: `${proxyToHost}:${proxyToPort}` });
 });
 
 server.listen(proxyFromPort);
 
-console.log(`Proxying port ${proxyFromPort} to localhost:${proxyToPort}`);
+console.log(`Proxying port ${proxyFromPort} to ${proxyToHost}:${proxyToPort}`);
