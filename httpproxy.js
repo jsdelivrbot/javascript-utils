@@ -1,6 +1,15 @@
 /**
  * Simple local proxy.
  *
+ * Installation:
+ * 1. Copy this file to any directory.
+ * 2. Run "npm install http-proxy" in that same directory.
+ *
+ * Running:
+ * Simply run "node httpproxy.js".
+ *
+ * Configuration is done in this file itself i.e. just change the script :)
+ *
  * Acts as a regular proxy, but also lets you swap in local resources, which is very useful for
  * debugging JavaScript etc in a page in situations where you can't easily modify/rebuild the
  * source JavaScript i.e. similar to www.requestly.in, but with local filesystem support
