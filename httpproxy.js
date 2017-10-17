@@ -21,7 +21,7 @@
  */
 
 const proxyFromPort = 21080;
-const proxyTo = 'http://devoptics-ci-staging.beescloud.com';
+const proxyTo = 'https://ci.blueocean.io';
 
 //
 // MODIFY this array. Note you can add a 'headers' object too.
