@@ -4,6 +4,10 @@
  * Installation:
  * 1. Copy this file to any directory.
  * 2. Run "npm install http-proxy" in that same directory.
+ * 3. Modify the local listen port via "proxyFromPort".
+ * 4. Modify the target web address to proxy to via "proxyTo".
+ * 5. Modify "proxyToLocals" if you want to swap in local files
+ *    in place of files normally loaded from "proxyTo".
  *
  * Running:
  * Simply run "node httpproxy.js".
@@ -17,7 +21,7 @@
  */
 
 const proxyFromPort = 21080;
-const proxyTo = 'http://localhost:8080';
+const proxyTo = 'http://devoptics-ci-staging.beescloud.com';
 
 //
 // MODIFY this array. Note you can add a 'headers' object too.
@@ -27,12 +31,14 @@ const proxyTo = 'http://localhost:8080';
 //
 // All requests that don't match anything in this array are just proxied to the target server.
 //
+// "from" just needs to match the end of the file path i.e. you don't need the full thing.
+//
 const proxyToLocals = [
-    // {
-    //     from: '/scripts/hudson-behavior.js',
-    //     to: '/Users/tfennelly/projects/jenkins/war/src/main/webapp/scripts/hudson-behavior.js',
-    //     headers: {}
-    // }
+//     {
+//         from: 'jenkins/blueocean/blueocean.js',
+//         to: '/Users/tfennelly/projects/blueocean-plugin/blueocean-web/target/classes/io/jenkins/blueocean/blueocean.js',
+//         headers: {}
+//     }
 ];
 
 const mimetypes = {
@@ -45,7 +51,7 @@ const httpProxy = require('http-proxy');
 const fs = require('fs');
 const path = require('path');
 
-const proxy = httpProxy.createProxyServer({});
+const proxy = httpProxy.createProxyServer({secure: false});
 const server = http.createServer(function(req, res) {
 
     // Check do we want to swap in a local file for the requested file.
@@ -53,7 +59,7 @@ const server = http.createServer(function(req, res) {
         const proxyToLocal = proxyToLocals[i];
 
         if (req.url.endsWith(proxyToLocal.from)) {
-            console.log(`Applying proxyToLocal: ${proxyToLocal.from} -> ${proxyToLocal.to}`);
+            console.log(`Applying proxyToLocal: ${req.url} to ${proxyToLocal.to}`);
 
             const body = fs.readFileSync(proxyToLocal.to, "utf-8");
             const headers = {
