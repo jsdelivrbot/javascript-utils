@@ -31,7 +31,8 @@ const proxyTo = 'https://ci.blueocean.io';
 //
 // All requests that don't match anything in this array are just proxied to the target server.
 //
-// "from" just needs to match the end of the file path i.e. you don't need the full thing.
+// - "from" just needs to match the end of the file path i.e. you don't need the full thing.
+// - "to" is the path to the local file.
 //
 const proxyToLocals = [
 //     {
